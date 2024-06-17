@@ -1,5 +1,4 @@
-import  React, { useEffect, useState } from "react";
-import axios from "axios"
+import  React from "react";
 import { useContext } from "react"
 import { AuthContext } from "../Context/AuthContext"
 import Style from "./Cart.module.css"

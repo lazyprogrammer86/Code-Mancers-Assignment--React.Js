@@ -1,15 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import {Login} from "./Login.jsx"
 import {Cart} from "./Cart.jsx"
-  import { Product } from "./Product.jsx";
-import { AuthContext } from "../Context/AuthContext";
-import { useContext } from "react";
+import { Product } from "./Product.jsx";
 import PrivateRoute from "./PrivateRoutes.jsx";
 import { Register } from "./register.jsx";
 
 
 export const AllRoutes=()=>{
- const {cartData} =useContext(AuthContext)
     return (
         <div>
           <Routes>
