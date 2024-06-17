@@ -13,21 +13,22 @@ export const Product=()=>{
     const {isState}= useContext(AuthContext)
     const initalNewProduct = {title: '', description: '', image: '', price: 0};
     const [newData, setNewData] = useState(initalNewProduct);
-  
-    useEffect(()=>{
+
+    let showNewData = () => {
       axios.get("http://localhost:3000/api/product/get", {headers: {Authorization: isState.token}}).then((res)=>{
         setData(res.data)
       });
+    }
+
+    useEffect(()=>{
+      showNewData();
     },[])
     
     const handleSubmit= async(e) => {
       e.preventDefault();
       await axios.post('http://localhost:3000/api/product/insert', newData, {headers: {authorization: isState.token}});
       setNewData(initalNewProduct);
-      axios.get("http://localhost:3000/api/product/get", {headers: {Authorization: isState.token}}).then((res)=>{
-        setData(res.data)
-      });
-      
+      showNewData();
     }
 
     const handleChange = (key, value) => {
@@ -41,7 +42,7 @@ export const Product=()=>{
               
               {data.map((el)=>(
              <CartProduct key={el.productId} productId={el.productId} title={el.title} image={el.image} 
-             price={el.price} description={el.description} />
+             price={el.price} description={el.description} showNewData= {showNewData}/>
               ))}
 
             {isState.isAdmin ? <form className={Style.newProd}  onSubmit={handleSubmit}>

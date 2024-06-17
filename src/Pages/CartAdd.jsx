@@ -4,7 +4,7 @@ import { AuthContext } from "../Context/AuthContext"
 import sTyle from "./CartAdd.module.css"
 
 const CartProduct=(props)=>{
-   const {image, title, description, price, productId}=props
+   const {image, title, description, price, productId, showNewData}=props
   
     const {showCartData, cartData, isState}= useContext(AuthContext)
       
@@ -25,15 +25,22 @@ const CartProduct=(props)=>{
         alert("Product already added to cart")
     })
 
-   } 
+   }
+   
+   const deleteProduct = async(id) => {
+        await axios.delete('http://localhost:3000/api/product/delete?productId='+id, {headers: {Authorization: isState.token}});
+        showNewData();
+   }
     return (
         <div  className={sTyle.btn}>
             <img src={image} alt="thumbnail"/>
             <h3>{title}</h3>
             <p>{description}</p>
             <p className={sTyle.price} >price $: {price}</p>
-            <button onClick={() => addtoCart(productId)}>ADD TO CART</button>
-            
+            <button onClick={() => addtoCart(productId)} style={{background: 'green'}}>ADD TO CART</button>
+            <br />
+            <br />
+            {isState.isAdmin ? <button onClick={() => deleteProduct(productId)}> DELETE </button>: ''}
         </div>
     )
 
