@@ -20,8 +20,9 @@ export const Navbar = () => {
     >
       <div  className={Style.myNext}>
         <div className={Style.logo}>
-          <img src="https://www.aabhishek.com/wp-content/uploads/2016/05/Real-Estate-Construction-Logo-Design.png"/>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNAr63GytaAHrQB-1UYiyahhPPjgoPkt8n5Q&s"/>
         </div>
+      { isState.isAuth ? <>
       <NavLink to="/product">Product</NavLink>
 
         <div className={Style.catdata}>
@@ -30,6 +31,8 @@ export const Navbar = () => {
          </NavLink>
          <div className={Style.busket}> {cartData.length}</div>
           </div>
+          </>: ''
+      }
       </div>
      
        {/* one more div */}
@@ -37,6 +40,7 @@ export const Navbar = () => {
        {isState.isAuth ? (<button onClick={logoutUser} >Logout</button>) :
          (<NavLink to="/login">Login</NavLink>)
            }
+          {isState.isAuth ? '': (<NavLink to="/register">Register</NavLink>)}
 
         </div>
                    

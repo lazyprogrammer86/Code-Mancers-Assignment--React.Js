@@ -1,34 +1,32 @@
 import React from "react"
 import { useState } from "react"
 import style from "./Login.module.css"
-import { useContext } from "react"
-import { AuthContext } from "../Context/AuthContext"
 import { useNavigate } from "react-router-dom"
 import Footer from "./Footer"
 import axios from "axios"
 
-const userLogin=(userData)=>{
-   return axios.post("http://localhost:3000/auth/login", userData);
+const userRegister=(userData)=>{
+   return axios.post("http://localhost:3000/auth/register", userData);
 }
 
-export const Login=()=>{
+export const Register=()=>{
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("")
-    const {loginUser,logoutUser,isState,}= useContext(AuthContext)
+    const [username, setUsername] = useState("")
      
     const navigate= useNavigate();
         const userData={
+            username: username,
             email:email, 
             password:password
         }
 
-    const handleLogin=(e)=>{
+    const handleRegister=(e)=>{
         e.preventDefault()
         
-        userLogin(userData)
-        .then((res)=> {
-            loginUser(res.data.token, res.data.isAdmin);
-            navigate("/product")
+        userRegister(userData)
+        .then(()=> {
+            navigate("/login")
         }).catch(error => {
             alert(error.message);
         });
@@ -37,10 +35,11 @@ export const Login=()=>{
     return (
         <div>
           
-            <form onSubmit={handleLogin} className={style.form}>
-            <h2>Login</h2>
-               <input placeholder="Enter email address" type="email"   onChange={(e) => setEmail(e.target.value)} />
-               <input  placeholder="Enter password" type="password"  onChange={(e) => setPassword(e.target.value)} />
+            <form onSubmit={handleRegister} className={style.form} style={{height: '350px'}} >
+            <h2>Sign Up</h2>
+               <input placeholder="Enter username" type="text"   onChange={(e) => setUsername(e.target.value)} />
+               <input placeholder="Enter email Address" type="email"   onChange={(e) => setEmail(e.target.value)} />
+               <input  placeholder="Enter Password" type="password"  onChange={(e) => setPassword(e.target.value)} />
                <div className={style.submit} >
                <input  type="Submit"/>
                </div>

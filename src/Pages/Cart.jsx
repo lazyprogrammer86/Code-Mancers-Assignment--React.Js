@@ -6,7 +6,7 @@ import Style from "./Cart.module.css"
 
 
 export const Cart =()=>{
-    const {cartData, handleDelete ,handleAddQty,handleDecrease, isState}= useContext(AuthContext);
+    const {cartData, handleDelete ,handleAddQty,handleDecrease, isState, handleCheckout}= useContext(AuthContext);
     
     const total=cartData.reduce((acc,el)=>acc + el.price * el.count,0)
 
@@ -31,6 +31,9 @@ export const Cart =()=>{
        </div>
     )}
     <div className={Style.total}>Total $ {total.toFixed(2)}</div>
+      {cartData.length ? <div>
+      <button className={Style.checkout} onClick={()=>handleCheckout()}>Checkout</button>
+      </div> : ''}
     </div>
 
    )

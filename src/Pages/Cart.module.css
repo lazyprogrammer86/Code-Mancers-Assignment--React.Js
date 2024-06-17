@@ -64,3 +64,15 @@
     font-size: 18px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+.checkout{
+    margin-top: 20px;
+    border: none;
+    background-color: rgb(8, 109, 109);
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 25px;
+    font-weight: 400;
+    cursor: pointer;
+}

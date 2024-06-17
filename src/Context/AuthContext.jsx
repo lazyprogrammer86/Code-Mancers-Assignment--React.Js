@@ -1,29 +1,30 @@
 import axios from "axios"
-import { Children, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { createContext } from "react"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export const AuthContext= createContext()
 
-const AuthContextProvider=({children})=>{
+const AuthContextProvider=({children})=>{   
+    const [isState, setIsState] =useState({isAuth: localStorage.getItem('isAuth') || false, token: localStorage.getItem('token') || '', isAdmin: localStorage.getItem('isAdmin') || false});
 
-    const [isState, setIsState] =useState({isAuth: localStorage.getItem('isAuth') || false, token: localStorage.getItem('token') || ''});
-
-    
-    const loginUser=(token) =>{
+    const loginUser=(token, isAdmin) =>{
         setIsState({
             isAuth:true,
-            token:token
+            token:token,
+            isAdmin
         });
         localStorage.setItem('isAuth', true);
         localStorage.setItem('token', token);
+        localStorage.setItem('isAdmin', isAdmin);
         alert("Login Success")
        
     }
 
-    const logoutUser=(email,token) =>{
+    const logoutUser=() =>{
        localStorage.removeItem('isAuth');
        localStorage.removeItem('token');
+       localStorage.removeItem('isAdmin');
         setIsState(false)
     }
 
@@ -70,10 +71,23 @@ const handleDelete = async (id) => {
     showCartData();
 }
 
+const handleCheckout = async () => {
+    let address = undefined;
+    while(address === undefined) {
+        address = prompt('Please enter the shipping address');
+    }
+
+    if(!address) return;
+
+    await axios.post('http://localhost:3000/api/cart/checkout', {address}, {headers: {Authorization: isState.token}});
+    setCart([]);
+    alert("Order has been placed");
+    window.location = '/product';
+}
 
     return(
         <AuthContext.Provider value={{cartData,handleAddQty,showCartData,handleDecrease, handleAddQty, 
-           loginUser, isState,  logoutUser,handleDelete}} >
+           loginUser, isState,  logoutUser,handleDelete, handleCheckout}} >
             {children}
         </AuthContext.Provider>
     )

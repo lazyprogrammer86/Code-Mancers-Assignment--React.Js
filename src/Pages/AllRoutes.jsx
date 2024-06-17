@@ -5,6 +5,7 @@ import {Cart} from "./Cart.jsx"
 import { AuthContext } from "../Context/AuthContext";
 import { useContext } from "react";
 import PrivateRoute from "./PrivateRoutes.jsx";
+import { Register } from "./register.jsx";
 
 
 export const AllRoutes=()=>{
@@ -15,6 +16,7 @@ export const AllRoutes=()=>{
           <Route path="/product" element={<PrivateRoute><Product/></PrivateRoute> } />
           <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>  } />
           <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
           </Routes>
 
 
