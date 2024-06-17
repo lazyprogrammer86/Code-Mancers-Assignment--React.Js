@@ -9,8 +9,7 @@ const AuthContextProvider=({children})=>{
 
     const [isState, setIsState] =useState({isAuth: localStorage.getItem('isAuth') || false, token: localStorage.getItem('token') || ''});
 
-    const [token, setToken]= useState(null)
-
+    
     const loginUser=(token) =>{
         setIsState({
             isAuth:true,
@@ -25,7 +24,6 @@ const AuthContextProvider=({children})=>{
     const logoutUser=(email,token) =>{
        localStorage.removeItem('isAuth');
        localStorage.removeItem('token');
-        setToken(null)
         setIsState(false)
     }
 
@@ -34,51 +32,42 @@ const AuthContextProvider=({children})=>{
     const [quantity, setQuantity]= useState(0)
 
     const showCartData=()=>{
-        try{
-            
-            axios.get("https://akcart.herokuapp.com/cart")
-            .then((res)=>{
-                // console.log(res, "carakk")
-                setCart(res.data)
-            })
-        }catch(err)
-        {
-            console.log("err:",err)
-        }
+        axios.get("http://localhost:3000/api/cart/get", {headers: {Authorization: isState.token}}).then((res)=>{
+            setCart(res.data);
+        });
     }
     useEffect(() => {
         showCartData()
     }, [quantity])
 
 //prodct add
- const handleAddQty=(id)=>{
-  axios.get(`https://akcart.herokuapp.com/cart/${id}`)
-  .then((res)=>{
-    res.data.quantity += 1;
-    axios.patch(`https://akcart.herokuapp.com/cart/${id}`, { quantity: res.data.quantity }).then((res) => {
-        setQuantity(quantity + 1)
+ const handleAddQty=async(id)=>{
+    let data = cartData.map(item => ({productId: item.productId, count: item.count}));
+    let index = data.findIndex(item => item.productId == id);
 
-    })
-
-  })
- }
-
- const handleDecrease= (id) => {
-    axios.get(`https://akcart.herokuapp.com/cart/${id}`).then((res) => {
-        res.data.quantity -= 1;
-        axios.patch(`https://akcart.herokuapp.com/cart/${id}`, { quantity: res.data.quantity }).then((res) => {
-            setQuantity(quantity - 1)
-
-        })
-    })
-
+    if(index == -1) data.push({productId: id, count: 1});
+    else data[index].count++;
+    await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: {Authorization: isState.token}});
+    showCartData();
 }
 
-const handleDelete = (id) => {
-    axios.delete(`https://akcart.herokuapp.com/cart/${id}`).then((res) => {
-        setQuantity(quantity + 1)
+ const handleDecrease= async(id) => {
+    let data = cartData.map(item => ({productId: item.productId, count: item.count}));
+    let index = data.findIndex(item => item.productId == id);
+    if(index !== -1) {
+        if(data[index].count > 1) data[index].count--;
+        else data = data.filter(item => item.productId !=  id);
+    }
+    await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
+    showCartData();
+}
 
-    })
+const handleDelete = async (id) => {
+    let data = cartData.map(item => ({productId: item.productId, count: item.count}));
+    data = data.filter(item => item.productId !=  id);
+
+    await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
+    showCartData();
 }
 
 

@@ -10,7 +10,7 @@ import { AuthContext } from "../Context/AuthContext"
 
 export const Product=()=>{
     const [data, setData] = useState([]);
-    const {isState,}= useContext(AuthContext)
+    const {isState}= useContext(AuthContext)
     useEffect(()=>{
       axios.get("http://localhost:3000/api/product/get", {headers: {Authorization: isState.token}}).then((res)=>{
         setData(res.data)
@@ -24,7 +24,7 @@ export const Product=()=>{
             <div className={Style.grid}>
               
               {data.map((el)=>(
-             <CartProduct key={el.productId} id={el.productId} title={el.title} thumbnail={el.image} 
+             <CartProduct key={el.productId} productId={el.productId} title={el.title} image={el.image} 
              price={el.price} description={el.description} />
               ))}
     

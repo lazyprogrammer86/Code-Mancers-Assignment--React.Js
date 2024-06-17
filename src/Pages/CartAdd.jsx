@@ -4,48 +4,35 @@ import { AuthContext } from "../Context/AuthContext"
 import sTyle from "./CartAdd.module.css"
 
 const CartProduct=(props)=>{
-   const {thumbnail, title,description, price,id}=props
+   const {image, title, description, price, productId}=props
   
-    const {showCartData, cartData}= useContext(AuthContext)
+    const {showCartData, cartData, isState}= useContext(AuthContext)
       
  
 
- const addtoCart=(id,title,thumbnail,price)=>{
-        
-    const cartItem={
-        title:title,
-        image:thumbnail,
-        price:price,
-        quantity:1,
-        id:id
-    }
-  
+ const addtoCart=(productId)=>{
+    let data = cartData.map(item => ({productId: item.productId, count: item.count}));
     
-     try{
-        axios.post("https://akcart.herokuapp.com/cart",{...cartItem},{headers:{"Access-Control-Allow-Origin":"*","mode":"no-cors"}})
-        .then((res)=>{
-            showCartData()
-            alert("Successfully added to cart")
-        })
-        .catch((err)=>{
-            alert("Product already added to cart")
-        })
-        
-       
-    }
-    catch(err){
-        console.log("error:",err)
-       
-    }
+    let index = data.findIndex(item => item.productId == productId);
+    if(index == -1) data.push({productId: productId, count: 1});
+    else data[index].count++;
+    axios.put("http://localhost:3000/api/cart/insert", data, {headers:{Authorization: isState.token}})
+    .then((res)=>{
+        showCartData()
+        alert("Successfully added to cart")
+    })
+    .catch((err)=>{
+        alert("Product already added to cart")
+    })
 
    } 
     return (
         <div  className={sTyle.btn}>
-            <img src={thumbnail} alt="thumbnail"/>
+            <img src={image} alt="thumbnail"/>
             <h3>{title}</h3>
-           <p>{description}</p>
-           <p className={sTyle.price} >price $: {price}</p>
-            <button onClick={() => addtoCart(id,title,thumbnail,price)}>ADD TO CART</button>
+            <p>{description}</p>
+            <p className={sTyle.price} >price $: {price}</p>
+            <button onClick={() => addtoCart(productId)}>ADD TO CART</button>
             
         </div>
     )
