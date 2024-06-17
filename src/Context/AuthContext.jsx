@@ -24,6 +24,11 @@ const AuthContextProvider=({children})=>{
        localStorage.removeItem('isAuth');
        localStorage.removeItem('token');
        localStorage.removeItem('isAdmin');
+       setIsState({
+        isAuth:false,
+        token:'',
+        isAdmin: false
+    });
         setIsState(false)
     }
 

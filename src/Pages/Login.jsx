@@ -15,9 +15,10 @@ export const Login=()=>{
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("")
     const {loginUser,logoutUser,isState,}= useContext(AuthContext)
-     
+    
     const navigate= useNavigate();
-        const userData={
+    if(isState.isAuth) navigate("/product");
+    const userData={
             email:email, 
             password:password
         }
