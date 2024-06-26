@@ -28,9 +28,13 @@ const CartProduct=(props)=>{
    }
    
    const deleteProduct = async(id) => {
-        await axios.delete('http://localhost:3000/api/product/delete?productId='+id, {headers: {Authorization: isState.token}});
-        showNewData();
-   }
+        try{
+            await axios.delete('http://localhost:3000/api/product/delete?productId='+id, {headers: {Authorization: isState.token}});
+            showNewData();
+        }catch(error){
+            alert(error.message);
+        }
+    }
     return (
         <div  className={sTyle.btn}>
             <img src={image} alt="thumbnail"/>

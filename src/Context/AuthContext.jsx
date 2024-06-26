@@ -39,10 +39,12 @@ const AuthContextProvider=({children})=>{
     const showCartData=()=>{
         axios.get("http://localhost:3000/api/cart/get", {headers: {Authorization: isState.token}}).then((res)=>{
             setCart(res.data);
+        }).catch(error => {
+            alert(error.message);
         });
     }
     useEffect(() => {
-        showCartData()
+        if(isState.isAuth) showCartData();
     }, [quantity])
 
 //prodct add
@@ -52,8 +54,12 @@ const AuthContextProvider=({children})=>{
 
     if(index == -1) data.push({productId: id, count: 1});
     else data[index].count++;
-    await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: {Authorization: isState.token}});
-    showCartData();
+    try{
+        await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: {Authorization: isState.token}});
+        showCartData();
+    }catch(error){
+        alert(error.message);
+    }
 }
 
  const handleDecrease= async(id) => {
@@ -63,16 +69,23 @@ const AuthContextProvider=({children})=>{
         if(data[index].count > 1) data[index].count--;
         else data = data.filter(item => item.productId !=  id);
     }
-    await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
-    showCartData();
+    try{
+        await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
+        showCartData();
+    }catch(error){
+        alert(error.message);
+    }
 }
 
 const handleDelete = async (id) => {
     let data = cartData.map(item => ({productId: item.productId, count: item.count}));
     data = data.filter(item => item.productId !=  id);
-
-    await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
-    showCartData();
+    try{
+        await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
+        showCartData();
+    }catch(error){
+        alert(error.message);
+    }
 }
 
 const handleCheckout = async () => {
@@ -82,11 +95,14 @@ const handleCheckout = async () => {
     }
 
     if(!address) return;
-
-    await axios.post('http://localhost:3000/api/cart/checkout', {address}, {headers: {Authorization: isState.token}});
-    setCart([]);
-    alert("Order has been placed");
-    window.location = '/product';
+    try{
+        await axios.post('http://localhost:3000/api/cart/checkout', {address}, {headers: {Authorization: isState.token}});
+        setCart([]);
+        alert("Order has been placed");
+        window.location = '/product';
+    }catch(error){
+        alert(error.message);
+    }
 }
 
     return(

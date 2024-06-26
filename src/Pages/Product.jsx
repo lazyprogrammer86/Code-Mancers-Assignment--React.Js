@@ -17,6 +17,8 @@ export const Product=()=>{
     let showNewData = () => {
       axios.get("http://localhost:3000/api/product/get", {headers: {Authorization: isState.token}}).then((res)=>{
         setData(res.data)
+      }).catch(error => {
+        alert(error.message);
       });
     }
 
@@ -26,9 +28,13 @@ export const Product=()=>{
     
     const handleSubmit= async(e) => {
       e.preventDefault();
-      await axios.post('http://localhost:3000/api/product/insert', newData, {headers: {authorization: isState.token}});
-      setNewData(initalNewProduct);
-      showNewData();
+      try{
+        await axios.post('http://localhost:3000/api/product/insert', newData, {headers: {authorization: isState.token}});
+        setNewData(initalNewProduct);
+        showNewData();
+      }catch(error){
+        alert(error.message);
+      }
     }
 
     const handleChange = (key, value) => {
