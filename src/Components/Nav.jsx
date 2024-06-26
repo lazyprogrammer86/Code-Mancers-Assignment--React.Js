@@ -1,15 +1,13 @@
 import React from "react"
-import { Link, NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import Style from "./Nav.module.css"
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
-import { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 
 
 
 export const Navbar = () => {
-  const [data, setData] = useState([])
   const {cartData ,logoutUser, isState}= useContext(AuthContext)
  
 
@@ -20,7 +18,7 @@ export const Navbar = () => {
     >
       <div  className={Style.myNext}>
         <div className={Style.logo}>
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNAr63GytaAHrQB-1UYiyahhPPjgoPkt8n5Q&s"/>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNAr63GytaAHrQB-1UYiyahhPPjgoPkt8n5Q&s" alt="logo"/>
         </div>
       { isState.isAuth ? <>
       <NavLink to="/product">Product</NavLink>

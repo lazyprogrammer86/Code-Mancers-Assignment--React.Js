@@ -13,8 +13,8 @@ const CartProduct=(props)=>{
  const addtoCart=(productId)=>{
     let data = cartData.map(item => ({productId: item.productId, count: item.count}));
     
-    let index = data.findIndex(item => item.productId == productId);
-    if(index == -1) data.push({productId: productId, count: 1});
+    let index = data.findIndex(item => item.productId === productId);
+    if(index === -1) data.push({productId: productId, count: 1});
     else data[index].count++;
     axios.put("http://localhost:3000/api/cart/insert", data, {headers:{Authorization: isState.token}})
     .then((res)=>{

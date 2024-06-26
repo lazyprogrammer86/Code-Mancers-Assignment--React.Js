@@ -34,8 +34,6 @@ const AuthContextProvider=({children})=>{
 
     const [cartData, setCart] = useState([])
    
-    const [quantity, setQuantity]= useState(0)
-
     const showCartData=()=>{
         axios.get("http://localhost:3000/api/cart/get", {headers: {Authorization: isState.token}}).then((res)=>{
             setCart(res.data);
@@ -45,14 +43,14 @@ const AuthContextProvider=({children})=>{
     }
     useEffect(() => {
         if(isState.isAuth) showCartData();
-    }, [quantity])
+    })
 
 //prodct add
  const handleAddQty=async(id)=>{
     let data = cartData.map(item => ({productId: item.productId, count: item.count}));
-    let index = data.findIndex(item => item.productId == id);
+    let index = data.findIndex(item => item.productId === id);
 
-    if(index == -1) data.push({productId: id, count: 1});
+    if(index === -1) data.push({productId: id, count: 1});
     else data[index].count++;
     try{
         await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: {Authorization: isState.token}});
@@ -64,10 +62,10 @@ const AuthContextProvider=({children})=>{
 
  const handleDecrease= async(id) => {
     let data = cartData.map(item => ({productId: item.productId, count: item.count}));
-    let index = data.findIndex(item => item.productId == id);
+    let index = data.findIndex(item => item.productId === id);
     if(index !== -1) {
         if(data[index].count > 1) data[index].count--;
-        else data = data.filter(item => item.productId !=  id);
+        else data = data.filter(item => item.productId !==  id);
     }
     try{
         await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
@@ -79,7 +77,7 @@ const AuthContextProvider=({children})=>{
 
 const handleDelete = async (id) => {
     let data = cartData.map(item => ({productId: item.productId, count: item.count}));
-    data = data.filter(item => item.productId !=  id);
+    data = data.filter(item => item.productId !==  id);
     try{
         await axios.put(`http://localhost:3000/api/cart/insert`, data, {headers: { Authorization: isState.token}});
         showCartData();
@@ -106,7 +104,7 @@ const handleCheckout = async () => {
 }
 
     return(
-        <AuthContext.Provider value={{cartData,handleAddQty,showCartData,handleDecrease, handleAddQty, 
+        <AuthContext.Provider value={{cartData,showCartData,handleDecrease, handleAddQty, 
            loginUser, isState,  logoutUser,handleDelete, handleCheckout}} >
             {children}
         </AuthContext.Provider>

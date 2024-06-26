@@ -24,7 +24,7 @@ export const Product=()=>{
 
     useEffect(()=>{
       showNewData();
-    },[])
+    })
     
     const handleSubmit= async(e) => {
       e.preventDefault();
