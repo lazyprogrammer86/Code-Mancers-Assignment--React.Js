@@ -44,7 +44,7 @@ const CartProduct=(props)=>{
             <button onClick={() => addtoCart(productId)} style={{background: 'green'}}>ADD TO CART</button>
             <br />
             <br />
-            {isState.isAdmin ? <button onClick={() => deleteProduct(productId)}> DELETE </button>: ''}
+            {isState.isAdmin === true ? <button onClick={() => deleteProduct(productId)}> DELETE </button>: ''}
         </div>
     )
 
