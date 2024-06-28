@@ -43,7 +43,7 @@ const AuthContextProvider=({children})=>{
     }
     useEffect(() => {
         if(isState.isAuth) showCartData();
-    })
+    }, []);
 
 //prodct add
  const handleAddQty=async(id)=>{
