@@ -10,7 +10,7 @@ import { AuthContext } from "../Context/AuthContext"
 
 export const Product=()=>{
     const [data, setData] = useState([]);
-    const {isState}= useContext(AuthContext)
+    const {isState, cartData}= useContext(AuthContext)
     const initalNewProduct = {title: '', description: '', image: '', price: 0};
     const [newData, setNewData] = useState(initalNewProduct);
 
@@ -24,7 +24,7 @@ export const Product=()=>{
 
     useEffect(()=>{
       showNewData();
-    }, [])
+    }, [cartData])
     
     const handleSubmit= async(e) => {
       e.preventDefault();
@@ -48,9 +48,9 @@ export const Product=()=>{
               
               {data.map((el)=>(
              <CartProduct key={el.productId} productId={el.productId} title={el.title} image={el.image} 
-             price={el.price} description={el.description} showNewData= {showNewData}/>
+             price={el.price} description={el.description} showNewData= {showNewData} added={cartData.some(item => item.productId === el.productId)}/>
               ))}
-            {isState.isAdmin === true ? <form className={Style.newProd}  onSubmit={handleSubmit}>
+            {isState.isAdmin === 'true' ? <form className={Style.newProd}  onSubmit={handleSubmit}>
               <h2>Add New Product</h2>
               <input type ='text' className={Style.prodInput} placeholder="Enter the Title"  onChange={(e) => handleChange('title', e.target.value)}  value={newData.title}/>
               <input type ='text' className={Style.prodInput} placeholder="Enter the description" onChange={(e) => handleChange('description', e.target.value)} value={newData.description}/>

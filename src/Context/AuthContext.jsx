@@ -5,7 +5,7 @@ import { createContext } from "react"
 export const AuthContext= createContext()
 
 const AuthContextProvider=({children})=>{   
-    const [isState, setIsState] =useState({isAuth: localStorage.getItem('isAuth') || false, token: localStorage.getItem('token') || '', isAdmin: localStorage.getItem('isAdmin') || false});
+    const [isState, setIsState] =useState({isAuth: localStorage.getItem('isAuth') || false, token: localStorage.getItem('token') || '', isAdmin: localStorage.getItem('isAdmin') === 'true' ? true : false || false});
 
     const loginUser=(token, isAdmin) =>{
         setIsState({

@@ -4,8 +4,7 @@ import { AuthContext } from "../Context/AuthContext"
 import sTyle from "./CartAdd.module.css"
 
 const CartProduct=(props)=>{
-   const {image, title, description, price, productId, showNewData}=props
-  
+    const {image, title, description, price, productId, showNewData, added}=props
     const {showCartData, cartData, isState}= useContext(AuthContext)
       
  
@@ -41,7 +40,7 @@ const CartProduct=(props)=>{
             <h3>{title}</h3>
             <p>{description}</p>
             <p className={sTyle.price} >price $: {price}</p>
-            <button onClick={() => addtoCart(productId)} style={{background: 'green'}}>ADD TO CART</button>
+            {added ? <button style={{background: 'orange', cursor: 'no-drop'}}>IN CART</button> : <button onClick={() => addtoCart(productId)} style={{background: 'green'}}>ADD TO CART</button>}
             <br />
             <br />
             {isState.isAdmin === true ? <button onClick={() => deleteProduct(productId)}> DELETE </button>: ''}
