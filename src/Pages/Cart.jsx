@@ -1,14 +1,16 @@
-import  React from "react";
+import  React, { useEffect } from "react";
 import { useContext } from "react"
 import { AuthContext } from "../Context/AuthContext"
 import Style from "./Cart.module.css"
 
 
 export const Cart =()=>{
-    const {cartData, handleDelete ,handleAddQty,handleDecrease, handleCheckout}= useContext(AuthContext);
+    const {cartData, showCartData, handleDelete ,handleAddQty,handleDecrease, handleCheckout}= useContext(AuthContext);
     
     const total=cartData.reduce((acc,el)=>acc + el.price * el.count,0)
-
+    useEffect(() => {
+      showCartData();
+    }, [])
    return(
     <div>
       {cartData.map((el)=>
